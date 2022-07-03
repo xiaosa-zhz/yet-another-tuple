@@ -280,57 +280,64 @@ namespace myutil
     template<std::size_t I, class... Types>
     constexpr typename tuple_element<I, myutil::tuple<Types...>>::type&
         get(myutil::tuple<Types...>& t) noexcept {
-        auto&& base = (details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...>&)t;
-        return details::get_tuple_element_unit<I>(decltype(base)(base)).element;
+        using Base = details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...>&;
+        return details::get_tuple_element_unit<I>((Base)t).element;
     }
 
     template<std::size_t I, class... Types>
     constexpr typename tuple_element<I, myutil::tuple<Types...>>::type&&
         get(myutil::tuple<Types...>&& t) noexcept {
-        auto&& base = (details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...>&&)t;
-        return details::get_tuple_element_unit<I>(decltype(base)(base)).element;
+        using Base = details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...>&&;
+        using RtType = typename tuple_element<I, myutil::tuple<Types...>>::type&&;
+        return static_cast<RtType>(details::get_tuple_element_unit<I>((Base)t).element);
     }
 
     template<std::size_t I, class... Types>
     constexpr typename tuple_element<I, myutil::tuple<Types...>>::type const&
         get(myutil::tuple<Types...> const& t) noexcept {
-        auto&& base = (details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...> const&)t;
-        return details::get_tuple_element_unit<I>(decltype(base)(base)).element;
+        using Base = details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...> const&;
+        using RtType = typename tuple_element<I, myutil::tuple<Types...>>::type const&;
+        return static_cast<RtType>(details::get_tuple_element_unit<I>((Base)t).element);
     }
 
     template<std::size_t I, class... Types>
     constexpr typename tuple_element<I, myutil::tuple<Types...>>::type const&&
         get(myutil::tuple<Types...> const&& t) noexcept {
-        auto&& base = (details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...> const&&)t;
-        return details::get_tuple_element_unit<I>(decltype(base)(base)).element;
+        using Base = details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...> const&&;
+        using RtType = typename tuple_element<I, myutil::tuple<Types...>>::type const&&;
+        return static_cast<RtType>(details::get_tuple_element_unit<I>((Base)t).element);
     }
 
     template<typename T, class... Types>
     constexpr typename details::test_fetch<T, Types...>::type&
         get(myutil::tuple<Types...>& t) noexcept {
-        auto&& base = (details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...>&)t;
-        return details::get_tuple_element_unit<T>(decltype(base)(base)).element;
+        using Base = details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...>&;
+        using RtType = T&;
+        return static_cast<RtType>(details::get_tuple_element_unit<T>((Base)t).element);
     }
 
     template<typename T, class... Types>
     constexpr typename details::test_fetch<T, Types...>::type&&
         get(myutil::tuple<Types...>&& t) noexcept {
-        auto&& base = (details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...>&&)t;
-        return details::get_tuple_element_unit<T>(decltype(base)(base)).element;
+        using Base = details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...>&&;
+        using RtType = T&&;
+        return static_cast<RtType>(details::get_tuple_element_unit<T>((Base)t).element);
     }
 
     template<typename T, class... Types>
     constexpr typename details::test_fetch<T, Types...>::type const&
         get(myutil::tuple<Types...> const& t) noexcept {
-        auto&& base = (details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...> const&)t;
-        return details::get_tuple_element_unit<T>(decltype(base)(base)).element;
+        using Base = details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...> const&;
+        using RtType = const T&;
+        return static_cast<RtType>(details::get_tuple_element_unit<T>((Base)t).element);
     }
 
     template<typename T, class... Types>
     constexpr typename details::test_fetch<T, Types...>::type const&&
         get(myutil::tuple<Types...> const&& t) noexcept {
-        auto&& base = (details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...> const&&)t;
-        return details::get_tuple_element_unit<T>(decltype(base)(base)).element;
+        using Base = details::tuple_base<std::make_index_sequence<sizeof...(Types)>, Types...> const&&;
+        using RtType = const T&&;
+        return static_cast<RtType>(details::get_tuple_element_unit<T>((Base)t).element);
     }
 
     template<class... Types>
