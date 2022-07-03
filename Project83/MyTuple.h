@@ -521,10 +521,11 @@ namespace myutil
         else {
             constexpr std::array outer_index = details::outer_index<std::remove_cvref_t<Tuples>...>();
             constexpr std::array inner_index = details::inner_index<std::remove_cvref_t<Tuples>...>();
+            using RtType = typename details::concat<std::remove_cvref_t<Tuples>...>::type;
             auto tupletuple = forward_as_tuple(std::forward<Tuples>(args)...);
             // gcc and clang could not use constexpr var without capture right now
             return [&] <std::size_t... I>(std::index_sequence<I...>) {
-                return typename details::concat<std::remove_cvref_t<Tuples>...>::type{
+                return RtType{
                     get<inner_index[I]>(
                         std::forward<tuple_element_t<outer_index[I], decltype(tupletuple)>>(get<outer_index[I]>(tupletuple))
                     )...

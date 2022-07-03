@@ -9,7 +9,7 @@ int main()
     int n = 4;
     ref = myutil::make_tuple(5, 6, 7);
     auto result = myutil::tuple_cat(t0, myutil::tuple<int&>{ n }, std::as_const(t1), myutil::tuple<>{});
-    fmt::print("({}, {}, {}, {}, {}, {}, {})",
+    fmt::print("({}, {}, {}, {}, {}, {}, {})\n",
         myutil::get<0>(result),
         myutil::get<1>(result),
         myutil::get<2>(result),
@@ -18,4 +18,7 @@ int main()
         myutil::get<5>(result),
         myutil::get<6>(result)
     );
+
+    result = myutil::make_tuple(0, 0, 0, 0, 0, 0, 0);
+    fmt::print("{}\n", n);
 }
