@@ -154,8 +154,13 @@ namespace myutil
             constexpr void operator=(T&&) const noexcept {}
         };
 
+        template<typename... T>
+        inline constexpr bool always_false_v = false;
+
         template<class Tuple1, class Tuple2>
-        struct concat_impl;
+        struct concat_impl {
+            static_assert(always_false_v<Tuple1, Tuple2>, "Unsupported tuple_cat arguments.");
+        };
 
         template<class... Ts, class... Us>
         struct concat_impl<tuple<Ts...>, tuple<Us...>> {
@@ -511,7 +516,6 @@ namespace myutil
             return tuple<>{};
         }
         else {
-            static_assert((details::is_tuple_like_v<std::remove_cvref_t<Tuples>> && ...), "Unsupported tuple_cat arguments.");
             constexpr std::array outer_index = details::outer_index<std::remove_cvref_t<Tuples>...>();
             constexpr std::array inner_index = details::inner_index<std::remove_cvref_t<Tuples>...>();
             auto tupletuple = forward_as_tuple(std::forward<Tuples>(args)...);
