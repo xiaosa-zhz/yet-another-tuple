@@ -213,7 +213,7 @@ namespace myutil
 
         template<std::size_t To, std::size_t... I>
         struct transform_to_same<To, std::index_sequence<I...>> {
-            using type = std::index_sequence<(I, To)...>;
+            using type = std::index_sequence<((void)I, To)...>;
         };
 
         template<class... Tuples>
@@ -244,32 +244,28 @@ namespace myutil
         inline constexpr bool transform_test = true;
 
         template<class... Types, class... UTypes>
-        inline constexpr bool transform_test<1, tuple<Types...>, tuple<UTypes...>&> = not (
-            std::is_convertible_v<tuple<UTypes...>&, Types...>
+        inline constexpr bool transform_test<1, tuple<Types...>, tuple<UTypes...>&> =
+            not (std::is_convertible_v<tuple<UTypes...>&, Types...>
             || std::is_constructible_v<Types..., tuple<UTypes...>&>
-            || std::is_same_v<Types..., UTypes...>
-            );
+            || std::is_same_v<Types..., UTypes...>);
 
         template<class... Types, class... UTypes>
-        inline constexpr bool transform_test<1, tuple<Types...>, const tuple<UTypes...>&> = not (
-            std::is_convertible_v<const tuple<UTypes...>&, Types...>
+        inline constexpr bool transform_test<1, tuple<Types...>, const tuple<UTypes...>&> =
+            not (std::is_convertible_v<const tuple<UTypes...>&, Types...>
             || std::is_constructible_v<Types..., const tuple<UTypes...>&>
-            || std::is_same_v<Types..., UTypes...>
-            );
+            || std::is_same_v<Types..., UTypes...>);
 
         template<class... Types, class... UTypes>
-        inline constexpr bool transform_test<1, tuple<Types...>, tuple<UTypes...>&&> = not (
-            std::is_convertible_v<tuple<UTypes...>, Types...>
+        inline constexpr bool transform_test<1, tuple<Types...>, tuple<UTypes...>&&> =
+            not (std::is_convertible_v<tuple<UTypes...>, Types...>
             || std::is_constructible_v<Types..., tuple<UTypes...>>
-            || std::is_same_v<Types..., UTypes...>
-            );
+            || std::is_same_v<Types..., UTypes...>);
 
         template<class... Types, class... UTypes>
-        inline constexpr bool transform_test<1, tuple<Types...>, const tuple<UTypes...>&&> = not (
-            std::is_convertible_v<const tuple<UTypes...>, Types...>
+        inline constexpr bool transform_test<1, tuple<Types...>, const tuple<UTypes...>&&> =
+            not (std::is_convertible_v<const tuple<UTypes...>, Types...>
             || std::is_constructible_v<Types..., const tuple<UTypes...>>
-            || std::is_same_v<Types..., UTypes...>
-            );
+            || std::is_same_v<Types..., UTypes...>);
 
     } // namespace myutil::details
 
