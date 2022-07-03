@@ -447,7 +447,7 @@ namespace myutil
         requires (sizeof...(Types) == sizeof...(UTypes)) && (std::is_assignable_v<Types&, UTypes> && ...)
         constexpr tuple& operator=(tuple<UTypes...>&& other) {
             [&, this] <std::size_t... I>(std::index_sequence<I...>) {
-                ((get<I>(*this) = std::forward<Types>(get<I>(other))), ...);
+                ((get<I>(*this) = std::forward<UTypes>(get<I>(other))), ...);
             }(std::make_index_sequence<sizeof...(Types)>());
             return *this;
         }
@@ -456,7 +456,7 @@ namespace myutil
         requires (sizeof...(Types) == sizeof...(UTypes)) && (std::is_assignable_v<const Types&, UTypes> && ...)
         constexpr const tuple& operator=(tuple<UTypes...>&& other) const {
             [&, this] <std::size_t... I>(std::index_sequence<I...>) {
-                ((get<I>(*this) = std::forward<Types>(get<I>(other))), ...);
+                ((get<I>(*this) = std::forward<UTypes>(get<I>(other))), ...);
             }(std::make_index_sequence<sizeof...(Types)>());
             return *this;
         }
