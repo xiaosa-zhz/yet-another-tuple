@@ -185,6 +185,9 @@ namespace myutil
             using type = tuple<>;
         };
 
+        template<class... Tuples>
+        using concat_result_t = typename details::concat<std::remove_cvref_t<Tuples>...>::type;
+
         template<class... Seq>
         struct sequence_cat;
 
@@ -514,18 +517,17 @@ namespace myutil
     }
 
     template<class... Tuples>
-    constexpr typename details::concat<std::remove_cvref_t<Tuples>...>::type tuple_cat(Tuples&&... args) {
+    constexpr details::concat_result_t<Tuples...> tuple_cat(Tuples&&... args) {
         if constexpr (sizeof...(Tuples) == 0) {
             return tuple<>{};
         }
         else {
             constexpr std::array outer_index = details::outer_index<std::remove_cvref_t<Tuples>...>();
             constexpr std::array inner_index = details::inner_index<std::remove_cvref_t<Tuples>...>();
-            using RtType = typename details::concat<std::remove_cvref_t<Tuples>...>::type;
             auto tupletuple = forward_as_tuple(std::forward<Tuples>(args)...);
             // gcc and clang could not use constexpr var without capture right now
             return [&] <std::size_t... I>(std::index_sequence<I...>) {
-                return RtType{
+                return details::concat_result_t<Tuples...>{
                     get<inner_index[I]>(
                         std::forward<tuple_element_t<outer_index[I], decltype(tupletuple)>>(get<outer_index[I]>(tupletuple))
                     )...

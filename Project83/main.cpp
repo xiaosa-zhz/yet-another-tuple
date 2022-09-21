@@ -3,7 +3,7 @@
 
 int main()
 {
-    myutil::tuple<int, double, long> t0{ 1, 2, 3 };
+    myutil::tuple<int, int, long> t0{ 1, 2, 3 };
     myutil::tuple<int, double, int> t1{ 1, 2, 3 };
     const myutil::tuple<int&, double&, int&> ref = t1;
     int n = 4;
